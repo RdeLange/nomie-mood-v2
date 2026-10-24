@@ -3,6 +3,7 @@
   import { MOODS, dayKey, keepRecent, moodNote, moodOn, week, type Entry, type Mood } from './mood';
   import { paletteFrom, type Palette } from './palette';
   import { offerTracker } from './tracker-offer';
+  import { onPrefsChange } from './prefs-live';
 
   let plugin: any;
   let view = $state<'modal' | 'widget'>('modal');
@@ -48,7 +49,8 @@
       addToMoreMenu: true,
       addToWidgets: true,
     });
-    plugin.onRegistered(async () => {
+    onPrefsChange(plugin, () => applyNomieValues());
+  plugin.onRegistered(async () => {
       applyNomieValues();
       await load();
     });
