@@ -1,0 +1,15 @@
+{
+ "title": "Stemming",
+ "todayMood": "Vandaag: {mood}",
+ "howToday": "Hoe gaat het vandaag?",
+ "notePlaceholder": "Een notitie, als je wilt",
+ "lastSeven": "De afgelopen zeven dagen",
+ "moodRough": "Slecht",
+ "moodLow": "Laag",
+ "moodOkay": "Oké",
+ "moodGood": "Goed",
+ "moodGreat": "Geweldig",
+ "trackerLabel": "Stemming",
+ "trackerQ": "De tracker {label} toevoegen?",
+ "trackerBody": "Deze plugin schrijft #{tag} in je tijdlijn. De tracker nu toevoegen, zodat hij een eigen naam, emoji en kleur krijgt?"
+}

@@ -1,13 +1,16 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { MOODS, dayKey, keepRecent, moodNote, moodOn, week, type Entry, type Mood } from './mood';
-  import { paletteFrom, type Palette } from './palette';
+  import { t, setLanguage, currentLanguage } from './i18n/index.svelte';
+  import { paletteFrom, glassFrom, tintTextFrom, type Palette, type Glass } from './palette';
   import { offerTracker } from './tracker-offer';
   import { onPrefsChange } from './prefs-live';
 
   let plugin: any;
   let view = $state<'modal' | 'widget'>('modal');
   let palette = $state<Palette>(paletteFrom(undefined));
+  let glass = $state<Glass>(glassFrom(undefined));
+  let tintText = $state(tintTextFrom(undefined));
   let scale = $state(1);
   let entries = $state<Entry[]>([]);
   let ready = $state(false);
@@ -20,6 +23,9 @@
   const applyNomieValues = () => {
     if (!plugin?.prefs) return;
     palette = paletteFrom(plugin.prefs);
+    setLanguage(plugin.prefs?.language);
+    glass = glassFrom(plugin.prefs);
+    tintText = tintTextFrom(plugin.prefs);
     scale = plugin.prefs.fontScale || 1;
   };
 
@@ -62,42 +68,42 @@
     plugin.onUIOpened(async () => {
       view = 'modal';
       applyNomieValues();
-      offerTracker(plugin, { tag: 'mood', label: 'Mood', emoji: '🙂', color: '#F59F00' });
+      offerTracker(plugin, { tag: 'mood', label: t('trackerLabel'), emoji: '🙂', color: '#F59F00' });
       if (!ready) await load();
     });
   });
 </script>
 
-<div class="card" class:widget={view === 'widget'} style="--page: {palette.page}; --card: {palette.card}; --text: {palette.text}; --muted: {palette.textSecondary}; --line: {palette.separator}; --fill: {palette.fill}; --tint: {palette.tint}; --on-tint: {palette.onTint}; --tint-soft: {palette.tintSoft}; --scale: {scale};">
+<div class="card" class:widget={view === 'widget'} style="--page: {palette.page}; --card: {palette.card}; --text: {palette.text}; --muted: {palette.textSecondary}; --line: {palette.separator}; --fill: {palette.fill}; --tint: {palette.tint}; --on-tint: {palette.onTint}; --tint-soft: {palette.tintSoft}; --tint-text: {tintText}; --glass-fill: {glass.fill}; --glass-edge: {glass.edge}; --glass-blur: {glass.blur}; --glass-shadow: {glass.shadow}; --scale: {scale};">
   {#if view === 'widget'}
     <div class="moods compact">
       {#each MOODS as m (m.score)}
-        <button class="mood" class:on={todays?.score === m.score} aria-label={m.label} onclick={() => choose(m)}>{m.emoji}</button>
+        <button class="mood" class:on={todays?.score === m.score} aria-label={t(m.key)} onclick={() => choose(m)}>{m.emoji}</button>
       {/each}
     </div>
   {:else}
-    <h1>Mood</h1>
-    <p class="muted">{today.toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long' })}</p>
+    <header class="top"><h1>{t('title')}</h1></header>
+    <p class="muted">{today.toLocaleDateString(currentLanguage(), { weekday: 'long', day: 'numeric', month: 'long' })}</p>
 
     <section class="panel">
-      <p>{todays ? `Today: ${MOODS.find((m) => m.score === todays.score)?.label}` : 'How are you today?'}</p>
+      <p>{todays ? t('todayMood', { mood: t(MOODS.find((m) => m.score === todays.score)?.key ?? 'moodOkay') }) : t('howToday')}</p>
       <div class="moods">
         {#each MOODS as m (m.score)}
           <button class="mood" class:on={todays?.score === m.score} onclick={() => choose(m)}>
             <span class="face">{m.emoji}</span>
-            <span class="label">{m.label}</span>
+            <span class="label">{t(m.key)}</span>
           </button>
         {/each}
       </div>
-      <input class="input" placeholder="A note, if you like" bind:value={note} />
+      <input class="input" placeholder={t('notePlaceholder')} bind:value={note} />
     </section>
 
-    <h2>The last seven days</h2>
+    <h2>{t('lastSeven')}</h2>
     <section class="panel week">
       {#each series as d (d.date.toDateString())}
         <div class="col">
           <div class="column"><div style="height: {(d.score / 5) * 100}%"></div></div>
-          <span class="label">{d.date.toLocaleDateString(undefined, { weekday: 'short' })}</span>
+          <span class="label">{d.date.toLocaleDateString(currentLanguage(), { weekday: 'short' })}</span>
         </div>
       {/each}
     </section>
@@ -105,6 +111,10 @@
 </div>
 
 <style>
+  /* the app's text: its iOS font stack, with the app's smoothing */
+  :global(body) { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif; -webkit-font-smoothing: antialiased; --ios-font-rounded: ui-rounded, -apple-system, system-ui, sans-serif; }
+  /* the header is a Liquid Glass bar (D-glass): it stays at the top and the content scrolls under it */
+  .top { position: sticky; top: 0; z-index: 2; margin: -16px -16px 8px; padding: 16px 16px 10px; background: var(--glass-fill); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); border-bottom: 1px solid var(--glass-edge); }
   .card { box-sizing: border-box; min-height: 100vh; padding: 16px; background: var(--page); color: var(--text); font-size: calc(16px * var(--scale)); line-height: 1.4; }
   .card.widget { min-height: 0; padding: 12px; font-size: calc(14px * var(--scale)); }
   h1 { margin: 0; font-size: calc(26px * var(--scale)); font-weight: 700; }

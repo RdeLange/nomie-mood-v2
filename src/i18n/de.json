@@ -1,0 +1,15 @@
+{
+ "title": "Stimmung",
+ "todayMood": "Heute: {mood}",
+ "howToday": "Wie geht es dir heute?",
+ "notePlaceholder": "Eine Notiz, wenn du magst",
+ "lastSeven": "Die letzten sieben Tage",
+ "moodRough": "Schlecht",
+ "moodLow": "Niedrig",
+ "moodOkay": "Okay",
+ "moodGood": "Gut",
+ "moodGreat": "Super",
+ "trackerLabel": "Stimmung",
+ "trackerQ": "Den Tracker {label} hinzufügen?",
+ "trackerBody": "Dieses Plugin schreibt #{tag} in deine Timeline. Soll der Tracker jetzt hinzugefügt werden, damit er eigenen Namen, Emoji und Farbe hat?"
+}

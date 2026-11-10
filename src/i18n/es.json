@@ -1,0 +1,15 @@
+{
+ "title": "Ánimo",
+ "todayMood": "Hoy: {mood}",
+ "howToday": "¿Cómo estás hoy?",
+ "notePlaceholder": "Una nota, si quieres",
+ "lastSeven": "Los últimos siete días",
+ "moodRough": "Mal",
+ "moodLow": "Bajo",
+ "moodOkay": "Regular",
+ "moodGood": "Bien",
+ "moodGreat": "Genial",
+ "trackerLabel": "Ánimo",
+ "trackerQ": "¿Añadir el rastreador {label}?",
+ "trackerBody": "Este plugin escribe #{tag} en tu línea de tiempo. ¿Añadir ahora el rastreador, para que tenga su propio nombre, emoji y color?"
+}

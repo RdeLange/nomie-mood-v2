@@ -1,13 +1,16 @@
 // The mood rules as plain functions, so they can be tested without the app.
-export type Mood = { score: number; emoji: string; label: string };
+import type { Key } from './i18n/index.svelte';
+
+// label is the English name, used in the timeline note; key is the translated name shown on the screen
+export type Mood = { score: number; emoji: string; label: string; key: Key };
 export type Entry = { day: string; score: number; at: number; note: string };
 
 export const MOODS: Mood[] = [
-  { score: 1, emoji: '😣', label: 'Rough' },
-  { score: 2, emoji: '🙁', label: 'Low' },
-  { score: 3, emoji: '😐', label: 'Okay' },
-  { score: 4, emoji: '🙂', label: 'Good' },
-  { score: 5, emoji: '😄', label: 'Great' },
+  { score: 1, emoji: '😣', label: 'Rough', key: 'moodRough' },
+  { score: 2, emoji: '🙁', label: 'Low', key: 'moodLow' },
+  { score: 3, emoji: '😐', label: 'Okay', key: 'moodOkay' },
+  { score: 4, emoji: '🙂', label: 'Good', key: 'moodGood' },
+  { score: 5, emoji: '😄', label: 'Great', key: 'moodGreat' },
 ];
 
 // A day key such as 2026-10-24, in local time
