@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { startSnapshots } from './snapshot';
   import { onMount } from 'svelte';
   import { MOODS, dayKey, keepRecent, moodNote, moodOn, week, type Entry, type Mood } from './mood';
   import { t, setLanguage, currentLanguage } from './i18n/index.svelte';
@@ -55,6 +56,7 @@
       addToMoreMenu: true,
       addToWidgets: true,
     });
+    startSnapshots(plugin);
     onPrefsChange(plugin, () => applyNomieValues());
   plugin.onRegistered(async () => {
       applyNomieValues();
